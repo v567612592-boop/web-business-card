@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>김지혜 | 모바일 웹 명함 & 이력서</title>
+  
+  <!-- SEO 메타 설명 -->
+  <meta name="description" content="김지혜의 디지털 웹 명함 & 이력서입니다. F&B 현장 관리 경험과 AI 사무 자동화 역량을 겸비한 사무 행정 전문가입니다.">
+  <meta name="keywords" content="김지혜, 웹명함, 이력서, 사무행정, AI사무자동화, ITQ엑셀">
+  <meta name="author" content="김지혜">
+  
+  <!-- Open Graph (OG) 태그 - 카카오톡, 페이스북 등 링크 공유 미리보기 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="김지혜 | 디지털 웹 명함 & 이력서">
+  <meta property="og:description" content="현장 관리 노하우와 AI 사무 자동화를 결합한 스마트 사무 행정 인재, 김지혜입니다.">
+  <meta property="og:image" content="./assets/profile.png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="김지혜 웹 명함">
+  
+  <!-- Twitter Card 태그 - 트위터(X) 링크 공유 미리보기 -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="김지혜 | 디지털 웹 명함 & 이력서">
+  <meta name="twitter:description" content="현장 관리 노하우와 AI 사무 자동화를 결합한 스마트 사무 행정 인재, 김지혜입니다.">
+  <meta name="twitter:image" content="./assets/profile.png">
+  
+  <!-- 파비콘 (브라우저 탭 아이콘) -->
+  <link rel="icon" href="./assets/profile.png" type="image/png">
+  <!-- 구글 폰트 불러오기 (Outfit - 영문/숫자, Noto Sans KR - 한글) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- 폰트어썸 아이콘 (SNS 및 연락처 아이콘용) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS 연결 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 배경에 깔릴 은은한 애니메이션 그라데이션 블롭(빛나는 원)들 -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- 메인 레이아웃 (Scroll Snap이 적용되는 컨테이너) -->
+  <main class="scroll-container">
+    
+    <!-- ==============================================
+         섹션 1: 디지털 명함 (Card Section)
+         ============================================== -->
+    <section id="card-section">
+      <div class="section-content card-wrapper">
+        
+        <!-- 3D 뒤집기가 구현되는 명함 카드 컨테이너 -->
+        <div class="card-container" id="business-card" onclick="flipCard()">
+          <div class="card-inner">
+            
+            <!-- 명함 앞면 -->
+            <div class="card-front">
+              <div class="card-glass-glow"></div>
+              <div class="card-profile-area">
+                <img src="./assets/profile.png" alt="프로필 이미지" class="profile-img">
+              </div>
+              <div class="card-info-area">
+                <span class="badge">사무 행정 / AI 사무 자동화</span>
+                <h1 class="name">김지혜</h1>
+                <p class="eng-name">Jihye Kim</p>
+                <p class="tagline">"현장 관리 노하우와 AI 사무 자동화를 결합하여 효율적인 오피스를 만듭니다."</p>
+              </div>
+              <div class="card-footer-hint">
+                <span class="flip-hint"><i class="fa-solid fa-rotate"></i> 클릭하여 연락처 보기</span>
+              </div>
+            </div>
+            
+            <!-- 명함 뒷면 -->
+            <div class="card-back">
+              <div class="card-glass-glow"></div>
+              <h3 class="back-title">CONTACT ME</h3>
+              
+              <!-- 연락처 정보 목록 -->
+              <div class="contact-list">
+                <div class="contact-item" onclick="copyText('010-4184-6404', '전화번호가 복사되었습니다!', event)">
+                  <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                  <div class="contact-text">
+                    <span class="label">Phone</span>
+                    <span class="value">010-4184-6404</span>
+                  </div>
+                  <button class="copy-btn" title="복사"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                
+                <div class="contact-item" onclick="copyText('j_hye03@naver.com', '이메일 주소가 복사되었습니다!', event)">
+                  <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                  <div class="contact-text">
+                    <span class="label">Email</span>
+                    <span class="value">j_hye03@naver.com</span>
+                  </div>
+                  <button class="copy-btn" title="복사"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                
+                <div class="contact-item" onclick="showToast('ITQ 엑셀 및 다양한 자격증을 보유하고 있습니다.'); event.stopPropagation();">
+                  <div class="contact-icon"><i class="fa-solid fa-award"></i></div>
+                  <div class="contact-text">
+                    <span class="label">Certificates</span>
+                    <span class="value">ITQ 엑셀 자격증 보유</span>
+                  </div>
+                  <i class="fa-solid fa-circle-info link-arrow"></i>
+                </div>
+              </div>
+              
+              <!-- 명함 동작 버튼들 (명함 저장 및 공유) -->
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="downloadVCard(event)">
+                  <i class="fa-solid fa-user-plus"></i> 연락처 저장
+                </button>
+                <button class="btn btn-secondary" onclick="shareCard(event)">
+                  <i class="fa-solid fa-share-nodes"></i> 링크 공유
+                </button>
+              </div>
+              
+              <div class="card-footer-hint">
+                <span class="flip-hint"><i class="fa-solid fa-rotate"></i> 클릭하여 앞면으로</span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- 아래로 스크롤 안내 화살표 -->
+        <div class="scroll-down-hint" onclick="scrollToSection('resume-section')">
+          <p>아래로 스크롤하여 이력서 보기</p>
+          <div class="arrow-icon">
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- ==============================================
+         섹션 2: 이력서 (Resume Section)
+         ============================================== -->
+    <section id="resume-section">
+      <!-- 이력서 내부 스크롤 가능한 컨테이너 -->
+      <div class="section-content resume-wrapper">
+        
+        <!-- 이력서 헤더 -->
+        <header class="resume-header">
+          <div class="resume-title-group">
+            <h2>RESUME</h2>
+            <p class="subtitle">꼼꼼함과 체계적인 관리로 사무 효율을 높이는 인재</p>
+          </div>
+          <div class="resume-header-actions">
+            <!-- PDF 인쇄/다운로드 버튼 -->
+            <button class="btn btn-glass" onclick="window.print()">
+              <i class="fa-solid fa-file-pdf"></i> PDF 다운로드
+            </button>
+            <button class="btn btn-glass" onclick="scrollToSection('card-section')">
+              <i class="fa-solid fa-arrow-up"></i> 명함 보기
+            </button>
+          </div>
+        </header>
+
+        <!-- 이력서 본문 그리드 레이아웃 -->
+        <div class="resume-grid">
+          
+          <!-- 왼쪽 열: 자기소개 & 보유 역량 -->
+          <div class="resume-col-left">
+            
+            <!-- 프로필 카드 (이력서 내부용) -->
+            <div class="resume-card about-card">
+              <div class="avatar-group">
+                <img src="./assets/profile.png" alt="프로필" class="resume-avatar">
+                <div>
+                  <h3 class="user-name">김지혜</h3>
+                  <span class="user-title">Office & Admin Specialist</span>
+                </div>
+              </div>
+              <p class="about-p">
+                4년간의 F&B 현장에서 일 200개 이상의 제품 생산 라인 관리, 주간 식자재 발주·원가 산출, HACCP 위생 기준 운영 등 체계적인 관리 역량을 키웠습니다. 새일센터에서 AI 사무자동화 교육을 수료하며 ChatGPT 문서 작성, 엑셀 데이터 자동화 등 디지털 사무 스킬을 갖춰, 현장 감각과 IT 효율을 겸비한 사무 행정 인재로 성장했습니다.
+              </p>
+            </div>
+            
+            <!-- 기술 스택 카드 (Skills) -->
+            <div class="resume-card skills-card">
+              <h3 class="card-heading"><i class="fa-solid fa-screwdriver-wrench"></i> 보유 기술 (Skills)</h3>
+              <div class="skill-group">
+                <h4 class="skill-category">Office & AI</h4>
+                <div class="skill-tags">
+                  <span class="tag">ITQ 엑셀</span>
+                  <span class="tag">ChatGPT 문서작성</span>
+                  <span class="tag">AI 업무 자동화</span>
+                  <span class="tag">MS Office</span>
+                  <span class="tag">데이터 입력/정산</span>
+                  <span class="tag">전화·고객 응대</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <h4 class="skill-category">F&B Certificates</h4>
+                <div class="skill-tags">
+                  <span class="tag">제빵기능사</span>
+                  <span class="tag">제과기능사</span>
+                  <span class="tag">한식조리기능사</span>
+                  <span class="tag">바리스타 1급</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <h4 class="skill-category">Management</h4>
+                <div class="skill-tags">
+                  <span class="tag">재고·원가 관리</span>
+                  <span class="tag">스케줄 조율</span>
+                  <span class="tag">위생·품질 관리</span>
+                  <span class="tag">자동차운전면허</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 오른쪽 열: 주요 경험 & 학력/교육 -->
+          <div class="resume-col-right">
+            
+            <!-- 프로젝트/경험 카드 -->
+            <div class="resume-card timeline-card">
+              <h3 class="card-heading"><i class="fa-solid fa-briefcase"></i> 교육 및 경력 경험</h3>
+              <div class="timeline">
+                
+                <!-- 타임라인 아이템 1 -->
+                <div class="timeline-item">
+                  <div class="time-marker"></div>
+                  <div class="timeline-content">
+                    <span class="time-period">2026.06 - 2026.07</span>
+                    <h4 class="timeline-title">AI 사무자동화 교육 수료 (새일센터)</h4>
+                    <p class="timeline-desc">
+                      - ChatGPT·Copilot 등 생성형 AI로 보고서·제안서·회의록 자동 작성 실습<br>
+                      - 엑셀 함수(VLOOKUP, 피벗) 및 구글 시트 연동 데이터 자동화 프로젝트 수행<br>
+                      - HTML/CSS/JS 기반 디지털 웹 명함 & 이력서 포트폴리오 직접 제작
+                    </p>
+                  </div>
+                </div>
+                
+                <!-- 타임라인 아이템 2 -->
+                <div class="timeline-item">
+                  <div class="time-marker"></div>
+                  <div class="timeline-content">
+                    <span class="time-period">2025.06 - 2026.01</span>
+                    <h4 class="timeline-title">노티드 (아르바이트)</h4>
+                    <p class="timeline-desc">
+                      - 일 평균 150개+ 제품 생산 라인의 품질 관리 및 제조 공정 준수<br>
+                      - 일일 식자재 발주 데이터 수립으로 폐기율 10% 이상 감축 기여
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 타임라인 아이템 3 -->
+                <div class="timeline-item">
+                  <div class="time-marker"></div>
+                  <div class="timeline-content">
+                    <span class="time-period">2024.03 - 2025.01</span>
+                    <h4 class="timeline-title">피시방 (아르바이트)</h4>
+                    <p class="timeline-desc">
+                      - 100석 규모 매장의 비품·식음료 전산 재고 관리 및 월 1회 실사 총괄<br>
+                      - 일일 매출 정산 및 POS 데이터 기반 일지 작성으로 운영 효율화
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 타임라인 아이템 4 -->
+                <div class="timeline-item">
+                  <div class="time-marker"></div>
+                  <div class="timeline-content">
+                    <span class="time-period">2022.05 - 2023.08</span>
+                    <h4 class="timeline-title">신화월드 베이커리 (사원)</h4>
+                    <p class="timeline-desc">
+                      - 리조트 베이커리 일 200개+ 대량 생산 공정 조율 및 스케줄 관리<br>
+                      - 주간 식자재 수불 대장 엑셀 작성, HACCP 위생 등급 A 유지 기여
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 타임라인 아이템 5 -->
+                <div class="timeline-item">
+                  <div class="time-marker"></div>
+                  <div class="timeline-content">
+                    <span class="time-period">2021.08 - 2022.01</span>
+                    <h4 class="timeline-title">씨앤비베이커리 (사원)</h4>
+                    <p class="timeline-desc">
+                      - 제조 파트 라인 관리 및 주간 발주 데이터 수립·원가 산출 지원<br>
+                      - 일별 판매 추이 분석에 따른 재고 수급 최적화 대응
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            
+            <!-- 학력 및 자격증 카드 -->
+            <div class="resume-card list-card">
+              <h3 class="card-heading"><i class="fa-solid fa-graduation-cap"></i> 학력 및 자격증</h3>
+              
+              <div class="list-item">
+                <div class="list-title">한국대학교 외식조리학과 학사 졸업</div>
+                <div class="list-subtitle">2017.03 - 2021.02</div>
+              </div>
+              
+              <div class="list-divider"></div>
+              
+              <div class="list-item">
+                <div class="list-title">ITQ 엑셀 자격증</div>
+                <div class="list-subtitle">한국생산성본부 | 2026</div>
+              </div>
+              <div class="list-item">
+                <div class="list-title">제빵기능사 / 제과기능사</div>
+                <div class="list-subtitle">한국산업인력공단 | 2020</div>
+              </div>
+              <div class="list-item">
+                <div class="list-title">한식조리기능사</div>
+                <div class="list-subtitle">한국산업인력공단 | 2019</div>
+              </div>
+              <div class="list-item">
+                <div class="list-title">바리스타 1급</div>
+                <div class="list-subtitle">한국커피협회 | 2021</div>
+              </div>
+              <div class="list-item">
+                <div class="list-title">자동차운전면허 (2종 보통)</div>
+                <div class="list-subtitle">경찰청 | 2018</div>
+              </div>
+            </div>
+
+          </div>
+          
+        </div>
+        
+        <!-- 이력서 푸터 -->
+        <footer class="resume-footer">
+          <p>© 2026 Jihye Kim. All rights reserved.</p>
+        </footer>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 알림 메시지용 토스트 팝업 -->
+  <div id="toast" class="toast-popup">
+    <span id="toast-message">복사되었습니다!</span>
+  </div>
+
+  <!-- 자바스크립트 연결 -->
+  <script src="script.js"></script>
+</body>
+</html>

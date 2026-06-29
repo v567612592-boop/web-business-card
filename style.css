@@ -1,0 +1,1017 @@
+/* ==========================================================================
+   1. 디자인 시스템 & 변수 설정 (Design System & Variables)
+   ========================================================================== */
+:root {
+  /* 색상 테마 - 프리미엄 다크 + 네온 인디고/시안 포인트 */
+  --bg-color: #0a0a1a;
+  --bg-surface: #0f0f23;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  
+  --primary: #818cf8; /* 밝은 인디고 */
+  --primary-rgb: 129, 140, 248;
+  --secondary: #22d3ee; /* 밝은 시안 */
+  --secondary-rgb: 34, 211, 238;
+  --accent: #a78bfa; /* 바이올렛 */
+  --accent-rgb: 167, 139, 250;
+  
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.5);
+  
+  --font-sans: 'Outfit', 'Noto Sans KR', sans-serif;
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 스크롤바 커스텀 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* 기본 리셋 및 전역 스타일 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   2. 메시 그라데이션 배경 (Mesh Gradient Background)
+   ========================================================================== */
+.bg-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: float-blob 20s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(var(--primary-rgb), 0.7) 0%, rgba(0,0,0,0) 70%);
+  top: -15%;
+  left: -15%;
+}
+
+.blob-2 {
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, rgba(var(--secondary-rgb), 0.5) 0%, rgba(0,0,0,0) 70%);
+  bottom: -20%;
+  right: -15%;
+  animation-delay: -5s;
+  animation-duration: 25s;
+}
+
+.blob-3 {
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.5) 0%, rgba(0,0,0,0) 70%);
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -10s;
+}
+
+@keyframes float-blob {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(4vw, -3vh) scale(1.08); }
+  66% { transform: translate(-3vw, 5vh) scale(0.95); }
+  100% { transform: translate(2vw, -2vh) scale(1.05); }
+}
+
+/* ==========================================================================
+   3. 풀페이지 스크롤 스냅 (Scroll Snap Layout)
+   ========================================================================== */
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+section {
+  width: 100%;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 40px 20px;
+}
+
+.section-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   4. 명함 섹션 스타일 (Card Section & 3D Flip)
+   ========================================================================== */
+.card-wrapper {
+  height: calc(100vh - 80px);
+  position: relative;
+}
+
+/* 3D 원근법 설정 */
+.card-container {
+  width: 500px;
+  height: 310px;
+  perspective: 1500px;
+  cursor: pointer;
+  z-index: 10;
+  animation: card-entry 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes card-entry {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 22px;
+  will-change: transform;
+}
+
+/* 마우스가 호버된 상태일 때는 마우스무브가 딜레이 없이 3D 반응하도록 트랜지션 속도를 줄임 */
+.card-container:hover .card-inner {
+  transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* 뒤집기 상태 적용 클래스 */
+.card-container.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* 명함 앞면 및 뒷면 공통 스타일 */
+.card-front, .card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 22px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  background: rgba(15, 15, 35, 0.75);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  /* 그라데이션 보더 */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(var(--primary-rgb), 0.06);
+}
+
+/* 그라데이션 보더를 위한 pseudo-element */
+.card-front::before, .card-back::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.5), rgba(var(--secondary-rgb), 0.3), rgba(var(--accent-rgb), 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-glass-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 80%);
+  pointer-events: none;
+  transform: rotate(-15deg);
+  z-index: 0;
+}
+
+/* 4-1. 명함 앞면 구성 */
+.card-front {
+  display: grid;
+  grid-template-columns: 115px 1fr;
+  align-items: center;
+  gap: 28px;
+}
+
+.card-profile-area {
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(var(--primary-rgb), 0.3);
+  box-shadow: 0 0 25px rgba(var(--primary-rgb), 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-info-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--secondary);
+  background: rgba(var(--secondary-rgb), 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(var(--secondary-rgb), 0.2);
+}
+
+.name {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  filter: drop-shadow(0 0 20px rgba(var(--primary-rgb), 0.3));
+}
+
+.eng-name {
+  font-size: 1.0rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 14px;
+}
+
+.tagline {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  word-break: keep-all;
+  line-height: 1.5;
+}
+
+/* 4-2. 명함 뒷면 구성 */
+.card-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.back-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition-smooth);
+}
+
+.contact-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(var(--primary-rgb), 0.2);
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.08);
+}
+
+.contact-icon {
+  font-size: 1.1rem;
+  color: var(--primary);
+  width: 24px;
+  text-align: center;
+}
+
+.contact-text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-text .label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.contact-text .value {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.copy-btn, .link-arrow {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition-smooth);
+}
+
+.contact-item:hover .copy-btn, .contact-item:hover .link-arrow {
+  color: var(--secondary);
+}
+
+/* 명함 액션 버튼들 */
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 5px;
+  position: relative;
+  z-index: 2;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: none;
+  font-family: var(--font-sans);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, rgba(var(--accent-rgb), 0.9) 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 30px rgba(var(--primary-rgb), 0.5), 0 0 20px rgba(var(--primary-rgb), 0.2);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(var(--secondary-rgb), 0.3);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(var(--secondary-rgb), 0.15);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(var(--primary-rgb), 0.3);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.15);
+}
+
+/* 4-3. 공통 힌트 푸터 */
+.card-footer-hint {
+  grid-column: span 2;
+  text-align: center;
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.flip-hint {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.7;
+  animation: hint-pulse 2.5s infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* 4-4. 이력서 스크롤 안내 화살표 */
+.scroll-down-hint {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  animation: bounce-glow 2.5s infinite;
+  z-index: 10;
+}
+
+.scroll-down-hint p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.arrow-icon {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  filter: drop-shadow(0 0 8px rgba(var(--secondary-rgb), 0.5));
+}
+
+@keyframes bounce-glow {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+  60% { transform: translateY(-6px); }
+}
+
+/* ==========================================================================
+   5. 이력서 섹션 스타일 (Resume Section)
+   ========================================================================== */
+#resume-section {
+  padding: 60px 20px;
+  align-items: flex-start;
+}
+
+.resume-wrapper {
+  max-width: 920px;
+  height: auto;
+  gap: 30px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+/* 이력서 영역이 화면에 노출될 때 애니메이션 처리 */
+#resume-section.active .resume-wrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 5-1. 이력서 헤더 */
+.resume-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 20px;
+  gap: 20px;
+}
+
+.resume-title-group h2 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(var(--primary-rgb), 0.2));
+}
+
+.resume-title-group .subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+.resume-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* 5-2. 이력서 그리드 배치 */
+.resume-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 22px;
+}
+
+/* 이력서 카드 공통 스타일 */
+.resume-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* 스태거 애니메이션 초기 상태 */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 카드가 보일 때 */
+.resume-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.resume-card:hover {
+  border-color: rgba(var(--primary-rgb), 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), 0 0 20px rgba(var(--primary-rgb), 0.04);
+}
+
+.card-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+}
+
+.card-heading i {
+  color: var(--secondary);
+  font-size: 1rem;
+}
+
+/* 5-3. 왼쪽 열 세부 */
+.resume-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 아웃라인 프로필 카드 */
+.avatar-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.resume-avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(var(--primary-rgb), 0.3);
+  object-fit: cover;
+  background: rgba(255,255,255,0.05);
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.user-title {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+.about-p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+/* 기술 태그 그룹 */
+.skill-group {
+  margin-bottom: 16px;
+}
+
+.skill-group:last-child {
+  margin-bottom: 0;
+}
+
+.skill-category {
+  font-size: 0.78rem;
+  color: var(--text-main);
+  font-weight: 600;
+  margin-bottom: 8px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-weight: 400;
+  transition: var(--transition-smooth);
+}
+
+.tag:hover {
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: rgba(var(--primary-rgb), 0.3);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.1);
+}
+
+/* 5-4. 오른쪽 열 세부 (타임라인 포함) */
+.resume-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 타임라인 스타일 */
+.timeline {
+  position: relative;
+  padding-left: 22px;
+  border-left: 2px solid rgba(var(--primary-rgb), 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: var(--transition-smooth);
+}
+
+.timeline-item:hover {
+  background: rgba(var(--primary-rgb), 0.04);
+  transform: translateX(4px);
+}
+
+.time-marker {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  left: -29px;
+  top: 14px;
+  border: 2px solid var(--bg-color);
+  box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.6);
+  animation: pulse-glow 2.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(var(--primary-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
+}
+
+.time-period {
+  font-size: 0.73rem;
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.timeline-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+/* 리스트형 카드 */
+.list-item {
+  padding: 8px 0;
+}
+
+.list-item:first-child {
+  padding-top: 0;
+}
+
+.list-item:last-child {
+  padding-bottom: 0;
+}
+
+.list-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.list-subtitle {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.list-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 10px 0;
+}
+
+/* 5-5. 이력서 푸터 */
+.resume-footer {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: 20px;
+}
+
+.resume-footer p {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   6. 유틸리티 및 인터랙티브 알림 (Utility & Toast)
+   ========================================================================== */
+.toast-popup {
+  position: fixed;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 15, 35, 0.95);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--primary-rgb), 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  font-family: var(--font-sans);
+}
+
+.toast-popup.show {
+  bottom: 30px;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   7. 반응형 디자인 미디어 쿼리 (Responsive Media Queries)
+   ========================================================================== */
+@media (max-width: 768px) {
+  section {
+    padding: 30px 15px;
+  }
+  
+  /* 모바일에서 명함 크기 최적화 */
+  .card-container {
+    width: 100%;
+    max-width: 400px;
+    height: 260px;
+  }
+
+  .card-front {
+    grid-template-columns: 85px 1fr;
+    gap: 16px;
+    padding: 22px;
+  }
+
+  .card-profile-area {
+    width: 85px;
+    height: 85px;
+  }
+
+  .name {
+    font-size: 1.7rem;
+  }
+
+  .eng-name {
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+  }
+
+  .tagline {
+    font-size: 0.78rem;
+  }
+
+  .card-back {
+    padding: 22px;
+  }
+
+  .contact-list {
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  .contact-item {
+    padding: 7px 10px;
+  }
+
+  .contact-text .value {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    padding: 9px 12px;
+    font-size: 0.73rem;
+  }
+
+  /* 모바일에서 이력서 1열 그리드로 변경 */
+  .resume-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .resume-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .resume-header-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .resume-title-group h2 {
+    font-size: 1.9rem;
+  }
+}
+
+/* ==========================================================================
+   8. 프린트 스타일 (A4 출력용 스타일 설정)
+   ========================================================================== */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .scroll-container {
+    height: auto;
+    overflow: visible;
+  }
+  
+  /* 명함, 배경 제거 */
+  #card-section, .bg-blobs, .scroll-down-hint, .resume-header-actions, .resume-footer {
+    display: none !important;
+  }
+  
+  #resume-section {
+    padding: 0;
+    min-height: auto;
+    page-break-after: avoid;
+  }
+  
+  .resume-wrapper {
+    opacity: 1 !important;
+    transform: none !important;
+    max-width: 100%;
+  }
+  
+  .resume-card {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    color: black !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .tag {
+    background: #f3f4f6 !important;
+    border: 1px solid #ccc !important;
+    color: black !important;
+  }
+  
+  .resume-grid {
+    grid-template-columns: 1fr 1.6fr !important;
+  }
+
+  .time-marker {
+    background: #444 !important;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+}
